@@ -1,19 +1,14 @@
 import sys
 import os
-import pika
 import rospy
 import json
-
 from aamas_sim.src.comm_interface.rabbitmq_interface import RabbitCommunication
 from geometry_msgs.msg import Twist
-from turtlebot3_msgs.msg import SensorState
 
 
 class RobotController:
 
     def __init__(self, robot_count):
-        rospy.init_node('robot_controller')
-
         self.robot_count = robot_count
         self.robot_base_name = 'tb3_%s'
         self.robot_ros_topic_base = '/%s/cmd_vel' % self.robot_base_name
@@ -54,6 +49,6 @@ class RobotController:
         self.rabbitmq_interface.start_listening()
 
 
-if __name__ == '__main__':
-    a = RobotController(3)
-    a.run()
+# if __name__ == '__main__':
+#     a = RobotController(3)
+#     a.run()
