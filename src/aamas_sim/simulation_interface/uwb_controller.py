@@ -1,7 +1,7 @@
 import math
 import rospy
 
-from aamas_sim.src.comm_interface.rabbitmq_interface import RabbitCommunication
+from aamas_sim.comm_interface.rabbitmq_interface import RabbitCommunication
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from gazebo_msgs.msg import ModelStates
 from rospy_message_converter import message_converter
@@ -35,7 +35,10 @@ class UWBController:
         robot_list = []
         for i in range(self.robot_count):
             robot_name = self.robot_base_name % i
-            pos_index = data.name.index(robot_name)
+            try:
+                pos_index = data.name.index(robot_name)
+            except:
+                continue
             pos_dict = message_converter.convert_ros_message_to_dictionary(data.pose[pos_index])
 
             refined_pos_dict = self.refine_uwb_packet(pos_dict, i)
