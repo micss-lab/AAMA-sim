@@ -2,7 +2,7 @@
     <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <!--    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/>-->
+        <arg name="world_name" value="$(find aamas_sim)/worlds/empty.world"/>
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="true"/>
@@ -32,4 +32,9 @@
         <arg name="yaw"   default=" 1.57"/>
     </include>
 
+    <!--    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/>-->
+
+    <!--Simulation Scripts-->
+    <node pkg="aamas_sim" name="sim_controller" type="simulation_controller.py" output="screen"/>
+    <node pkg="aamas_sim" name="sensor_controller" type="sensor_controller.py" output="screen"/>
 </launch>

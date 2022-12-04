@@ -8,7 +8,7 @@
   <arg name="yaw"   default=" 1.57"/>
 
 
-
+  <!--Robot spawn-->
   <group ns = "$(arg tb3_name)">
     <param name="robot_description" command="$(find xacro)/xacro --inorder $(find aamas_sim)/urdf/custom_turtlebot3_burger.urdf.xacro" />
 
@@ -19,5 +19,4 @@
 
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg tb3_name) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -Y $(arg yaw) -param robot_description" />
   </group>
-
 </launch>
