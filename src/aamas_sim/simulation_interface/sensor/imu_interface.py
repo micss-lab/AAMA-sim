@@ -35,7 +35,7 @@ class ImuInterface:
             self.send_imu_packet()
 
 
-if __name__ == '__main__':
-    rospy.init_node('test_imu')
-    a = ImuInterface(3)
-    a.dry_run()
+# if __name__ == '__main__':
+#     rospy.init_node('test_imu')
+#     a = ImuInterface(3)
+#     a.dry_run()
