@@ -1,6 +1,6 @@
 import rospy
-from aamas_sim.src.comm_interface.rabbitmq_interface import RabbitCommunication
-from aamas_sim.src.simulation_interface.sensor.imu_interface import ImuInterface
+from aamas_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+from aamas_sim.simulation_interface.sensor.imu_interface import ImuInterface
 
 
 class SensorController:
