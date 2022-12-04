@@ -1,56 +1,54 @@
 import sys
 import os
-import pika
 import rospy
 import json
+from aamas_sim.src.comm_interface.rabbitmq_interface import RabbitCommunication
 from geometry_msgs.msg import Twist
-from turtlebot3_msgs.msg import SensorState
 
 
 class RobotController:
 
-    def __init__(self, robot_id):
-        rospy.init_node('robot_controller_%s' % robot_id)
+    def __init__(self, robot_count):
+        self.robot_count = robot_count
+        self.robot_base_name = 'tb3_%s'
+        self.robot_ros_topic_base = '/%s/cmd_vel' % self.robot_base_name
 
-        self.robot_id = robot_id
-        self.rabbit_channel = None
-        self.rabbit_queue_name = 'tb3_%s_ctrl' % self.robot_id
+        self.rabbitmq_interface = RabbitCommunication()
 
-        self.connect_to_rabbitMQ()
-        self.ctl_pub = rospy.Publisher('/tb3_%s/cmd_vel' % self.robot_id, Twist, queue_size=1)
+        self.ros_pub_list = []
 
-    def connect_to_rabbitMQ(self):
-        credentials = pika.PlainCredentials('dogu', 'dogu')
-        connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost', port=5672, credentials=credentials))
+        self.rabbit_queue_name = 'robot_ctrl'
+        self.rabbitmq_interface.register_to_queue(self.rabbit_queue_name, self.rabbit_callback)
 
-        self.rabbit_channel = connection.channel()
+        self.init_ros_pubs()
 
-        self.rabbit_channel.queue_declare(queue=self.rabbit_queue_name,
-                                          arguments={"x-max-length": 1,
-                                                     "x-overflow": "drop-head"})
+    def init_ros_pubs(self):
+        for i in range(self.robot_count):
+            pub = rospy.Publisher(self.robot_ros_topic_base % i, Twist, queue_size=1)
+            self.ros_pub_list.append(pub)
 
-    def rabbit_callback(self, ch, method, properties, body):
-        msg = json.loads(body)
-        print(" [x] Received %r" % msg)
-        vel_msg = Twist()
-        vel_msg.linear.x = msg['x']
-        vel_msg.linear.y = msg['y']
-        vel_msg.linear.z = 0
-        vel_msg.angular.x = 0
-        vel_msg.angular.y = 0
-        vel_msg.angular.z = 0
+    def rabbit_callback(self, data):
+        print(" [x] Received %r" % data)
+        for robot_msg in data:
 
-        self.ctl_pub.publish(vel_msg)
+            try:
+                robot_id = robot_msg['robot_id']
+                vel_msg = Twist()
+                vel_msg.linear.x = robot_msg['position']['x']
+                vel_msg.linear.y = robot_msg['position']['y']
+                vel_msg.linear.z = robot_msg['position']['z']
+                vel_msg.angular.x = robot_msg['orientation']['x']
+                vel_msg.angular.y = robot_msg['orientation']['y']
+                vel_msg.angular.z = robot_msg['orientation']['z']
+
+                self.ros_pub_list[int(robot_id)].publish(vel_msg)
+            except:
+                print('Invalid control message!')
 
     def run(self):
-        self.rabbit_channel.basic_consume(queue=self.rabbit_queue_name,
-                                          on_message_callback=self.rabbit_callback,
-                                          auto_ack=True)
+        self.rabbitmq_interface.start_listening()
 
-        print(' [*] Waiting for messages. To exit press CTRL+C')
-        self.rabbit_channel.start_consuming()
 
-if __name__ == '__main__':
-    a = RobotController(0)
-    a.run()
+# if __name__ == '__main__':
+#     a = RobotController(3)
+#     a.run()
