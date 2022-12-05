@@ -6,7 +6,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
     #scripts=['src/simulation_controller/simulation_controller.py'],
-    packages=['aamas_sim'],
+    packages=['aama_sim'],
     package_dir={'': 'src'})
 
 setup(**setup_args)

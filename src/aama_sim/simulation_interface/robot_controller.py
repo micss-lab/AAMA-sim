@@ -2,7 +2,7 @@ import sys
 import os
 import rospy
 import json
-from aamas_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
 from geometry_msgs.msg import Twist
 
 

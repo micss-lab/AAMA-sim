@@ -1,7 +1,7 @@
 import math
 import rospy
 
-from aamas_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from gazebo_msgs.msg import ModelStates
 from rospy_message_converter import message_converter
