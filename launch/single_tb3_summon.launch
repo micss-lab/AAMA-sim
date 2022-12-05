@@ -10,7 +10,7 @@
 
   <!--Robot spawn-->
   <group ns = "$(arg tb3_name)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find aamas_sim)/urdf/custom_turtlebot3_burger.urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find aama_sim)/urdf/custom_turtlebot3_burger.urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />

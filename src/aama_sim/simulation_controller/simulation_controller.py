@@ -1,7 +1,7 @@
 import rospy
-from aamas_sim.comm_interface.rabbitmq_interface import RabbitCommunication
-from aamas_sim.simulation_interface.robot_controller import RobotController
-from aamas_sim.simulation_interface.uwb_controller import UWBController
+from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+from aama_sim.simulation_interface.robot_controller import RobotController
+from aama_sim.simulation_interface.uwb_controller import UWBController
 
 
 class SimulationController:

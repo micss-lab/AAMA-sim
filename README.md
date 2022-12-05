@@ -1,2 +1,2 @@
-# AAMAS-sim
-AAMAS Simulation and Testing Environment
+# AAMA-sim
+AAMA-ROS Simulation and Testing Environment

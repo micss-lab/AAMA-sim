@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>aamas_sim</name>
+  <name>aama_sim</name>
   <version>0.0.0</version>
-  <description>The aamas_sim package</description>
+  <description>The aama_sim package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

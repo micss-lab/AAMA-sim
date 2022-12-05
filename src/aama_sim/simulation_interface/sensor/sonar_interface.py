@@ -1,6 +1,6 @@
 import rospy
-from aamas_sim.comm_interface.rabbitmq_interface import RabbitCommunication
-from aamas_sim.simulation_interface.sensor.sonar_robot_interface import SonarRobotInterface
+from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+from aama_sim.simulation_interface.sensor.sonar_robot_interface import SonarRobotInterface
 
 
 class SonarInterface:
