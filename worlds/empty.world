@@ -15,12 +15,12 @@
     <!-- A ground plane -->
     <include>
       <uri>model://ground_plane</uri>
-      <pose>25 0 0 0 0 0</pose>
+      <pose>10 0 0 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://lab_model</uri>
-      <pose>7 -10 0 0 0 0</pose>
+      <pose>2 -6 0 0 0 0</pose>
     </include>
 
     <physics type="ode">
