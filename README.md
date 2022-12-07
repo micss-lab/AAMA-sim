@@ -26,7 +26,7 @@ This part assumes all prerequisite tools installed. If not please follow [here](
 - Add the Catkin Workspace and Gazebo Model Path to Bashrc
   ```
    $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
-   $ echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/catkin_ws/src/aama_sim/models" >> ~/.bashrc
+   $ echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/catkin_ws/src/AAMA-sim/models" >> ~/.bashrc
    $ source ~/.bashrc
   ```
 
