@@ -7,7 +7,7 @@
       <collision name="collision">
         <geometry>
           <mesh>
-            <scale>1 1 1</scale>
+            <scale>0.75 0.75 0.75</scale>
             <uri>model://lab_model/meshes/floor.obj</uri>
           </mesh>
         </geometry>
@@ -15,11 +15,140 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <scale>1 1 1</scale>
+            <scale>0.75 0.75 0.75</scale>
             <uri>model://lab_model/meshes/floor.obj</uri>
           </mesh>
         </geometry>
       </visual>
     </link>
+
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table1</name>
+      <pose>8 9 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table2</name>
+      <pose>10 9 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table3</name>
+      <pose>12 9 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table4</name>
+      <pose>14 9 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table5</name>
+      <pose>8 10 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table6</name>
+      <pose>10 10 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table7</name>
+      <pose>12 10 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://desk_yellow</uri>
+      <name>table8</name>
+      <pose>14 10 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://bookshelf_large</uri>
+      <name>bs1</name>
+      <pose>21 15 0 0 0 0.07</pose>
+    </include>
+    <include>
+      <uri>model://bookshelf_large</uri>
+      <name>bs2</name>
+      <pose>23 15 0 0 0 0.07</pose>
+    </include>
+    <include>
+      <uri>model://bookshelf_large</uri>
+      <name>bs3</name>
+      <pose>25 15 0 0 0 0.07</pose>
+    </include>
+
+    <include>
+      <uri>model://table_conference_2</uri>
+      <name>tc1</name>
+      <pose>30 8.5 0 0 0 -1.14</pose>
+    </include>
+    <include>
+      <uri>model://table_conference_2</uri>
+      <name>tc2</name>
+      <pose>28.7 11 0 0 0 -1.14</pose>
+    </include>
+    <include>
+      <uri>model://table_conference_2</uri>
+      <name>tc3</name>
+      <pose>28.4 5.5 0 0 0 0.34</pose>
+    </include>
+    <include>
+      <uri>model://table_conference_2</uri>
+      <name>tc4</name>
+      <pose>25.8 4.5 0 0 0 0.34</pose>
+    </include>
+
+    <include>
+      <uri>model://chair_1</uri>
+      <name>c1</name>
+      <pose>28 11 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://chair_1</uri>
+      <name>c2</name>
+      <pose>28 10 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://chair_1</uri>
+      <name>c3</name>
+      <pose>28.7 9 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://chair_1</uri>
+      <name>c4</name>
+      <pose>29 8 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://chair_1</uri>
+      <name>c7</name>
+      <pose>27 6 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://chair_1</uri>
+      <name>c8</name>
+      <pose>29 7 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://sofa_set_1</uri>
+      <name>s1</name>
+      <pose>35 16 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://desk_brown</uri>
+      <name>db1</name>
+      <pose>32 12 0 0 0 -1.14</pose>
+    </include>
+
+    <include>
+      <uri>model://office_chair</uri>
+      <name>oc1</name>
+      <pose>31 12 0 0 0 0</pose>
+    </include>
+
   </model>
 </sdf>
