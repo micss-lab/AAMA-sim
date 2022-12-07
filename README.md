@@ -5,7 +5,7 @@ AAMA-ROS Simulation and Testing Environment
 
 This part assumes all prerequisite tools installed. If not please follow [here](setup.md).
 
-- Create a Catkin Workspace
+- Create a Catkin Workspace. Dont run if already created `catkin_ws` from `setup.md`
   ```
    $ cd ~
    $ mkdir catkin_ws && cd catkin_ws
@@ -26,7 +26,7 @@ This part assumes all prerequisite tools installed. If not please follow [here](
 - Add the Catkin Workspace and Gazebo Model Path to Bashrc
   ```
    $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
-   $ echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/catkin_ws/src/aama_sim/models" >> ~/.bashrc
+   $ echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/catkin_ws/src/AAMA-sim/models" >> ~/.bashrc
    $ source ~/.bashrc
   ```
 
