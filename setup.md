@@ -138,4 +138,15 @@ These commands should both work for Ubuntu and WSL2 Ubuntu. However, WSL2 Ubuntu
   - ID: dogu
   - Password: dogu
 
+## Install Python Packages
+Run these commands to install required Python packages
+
+- Install Python Packages
+  ```
+   $ python -m pip install pika rospy_message_converter
+  ```
+- Install Rospkg If You Get Errors
+  ```
+   $ python -m pip install rospkg
+  ```
 
