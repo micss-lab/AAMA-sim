@@ -10,8 +10,7 @@ class SonarRobotInterface:
     def __init__(self, robot_name):
         self.robot_name = robot_name
 
-        self.sub = rospy.Subscriber('/%s/sonar' % self.robot_name, Range, self.robot_sonar_callback, queue_size=1,
-                                    buff_size=1)
+        self.sub = rospy.Subscriber('/%s/sonar' % self.robot_name, Range, self.robot_sonar_callback, queue_size=1)
 
         self.sonar_msg = None
 

@@ -9,8 +9,7 @@ class ImuRobotInterface:
     def __init__(self, robot_name):
         self.robot_name = robot_name
 
-        self.sub = rospy.Subscriber('/%s/imu' % self.robot_name, Imu, self.robot_imu_callback, queue_size=1,
-                                    buff_size=1)
+        self.sub = rospy.Subscriber('/%s/imu' % self.robot_name, Imu, self.robot_imu_callback, queue_size=1)
 
         self.imu_msg = None
 
