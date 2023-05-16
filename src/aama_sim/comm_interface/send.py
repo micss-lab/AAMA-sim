@@ -1,16 +1,28 @@
 import pika
 import json
+import os, sys
 
-credentials = pika.PlainCredentials('dogu', 'dogu')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', port=5672,credentials=credentials))
-channel = connection.channel()
+def main():
+    credentials = pika.PlainCredentials('dogu', 'dogu')
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host='localhost', port=5672, credentials=credentials))
+    channel = connection.channel()
+
+    def callback(ch, method, properties, body):
+        print(" [x] Received %r" % body)
+
+    channel.basic_consume(queue='uwb', on_message_callback=callback, auto_ack=True)
+
+    print(' [*] Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()
 
 
-message = {
-    'x': -0.1,
-    'y': 0
-}
-
-channel.basic_publish(exchange='', routing_key='tb3_1_ctrl', body=json.dumps(message))
-print(" [x] Sent 'Hello World!'")
-connection.close()
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Interrupted')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)

@@ -1,3 +1,5 @@
+#!/user/bin/env python3
+
 import rospy
 from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
 from aama_sim.simulation_interface.robot_controller import RobotController

@@ -20,8 +20,7 @@ class UWBController:
         self.robot_base_name = 'tb3_%s'
 
         self.rabbitmq_interface = RabbitCommunication()
-        self.uwb_sub = rospy.Subscriber('/gazebo/model_states', ModelStates, self.robot_pos_callback, queue_size=1,
-                                        buff_size=1)
+        self.uwb_sub = rospy.Subscriber('/gazebo/model_states', ModelStates, self.robot_pos_callback, queue_size=1)
 
         self.rabbit_queue_name = 'uwb'
         self.rabbitmq_interface.register_queue(self.rabbit_queue_name)
@@ -43,7 +42,6 @@ class UWBController:
 
             refined_pos_dict = self.refine_uwb_packet(pos_dict, i)
             robot_list.append(refined_pos_dict)
-
         self.rabbitmq_interface.send(self.rabbit_queue_name, robot_list)
 
     def refine_uwb_packet(self, pos_dict, robot_id):
