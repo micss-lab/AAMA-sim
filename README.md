@@ -62,7 +62,18 @@ In order to run the Gazebo simulation with multiple robot run the commands below
   ```
    $ roslaunch aama_sim sim_controller.launch
   ```
-  
+
+## Available Sensors
+
+| Sensor Name    | ROS Topic                           | RabbitMQ Topic   |
+|----------------|-------------------------------------|------------------|
+| IMU            | `{robot_name}/imu`                  | `imu`            |
+| Sonar          | `{robot_name}/sonar`                | `sonar`          |
+| UWB            | `{robot_name}/uwb`                  | `uwb`            |
+| Logical Camera | `{robot_name}/logical_camera_image` | `logical_camera` |
+| Camera         | Not Available                       | Not Available    |
+| LIDAR          | Not Available                       | Not Available    |
+
 ## Useful Links
 
 - [Example JADE Agents for AAMA-Sim](https://github.com/micss-lab/AAMA-example-agents)
