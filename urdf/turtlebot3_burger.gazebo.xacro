@@ -168,6 +168,19 @@
          <fov>0.2967</fov>
       </plugin>
    </sensor>
+		<sensor name="logical_camera" type="logical_camera">
+			<plugin name="logical_camera_plugin" filename="liblogical_camera_plugin.so"/>
+			<logical_camera>
+			<near>0.55</near>
+			<far>5.5</far>
+			<horizontal_fov>1.3962634</horizontal_fov>
+			<aspect_ratio>1</aspect_ratio>
+			</logical_camera>
+
+			<visualize>true</visualize>
+			<always_on>true</always_on>
+			<update_rate>10</update_rate>
+		</sensor>
   </gazebo>
 
 </robot>
