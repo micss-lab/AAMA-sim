@@ -1,30 +1,77 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(aama_sim)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  gazebo_msgs
-  gazebo_ros
-  geometry_msgs
-  rospy
-  std_msgs
-  tf
-  turtlebot3_msgs
+    gazebo_ros
+    rospy
+    roscpp
+    std_msgs
+    sensor_msgs
+    geometry_msgs
+    gazebo_msgs
+    tf
+    turtlebot3_msgs
+    message_generation
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+find_package(gazebo REQUIRED)
 
+link_directories(${GAZEBO_LIBRARY_DIRS})
+
+include_directories(
+        include
+        lib
+        ${Boost_INCLUDE_DIR}
+        ${catkin_INCLUDE_DIRS}
+        ${GAZEBO_INCLUDE_DIRS}
+)
+
+add_library(logical_camera_plugin SHARED
+        src/logical_camera_plugin.cpp include/logical_camera_plugin.h
+        src/logical_camera_plugin.cpp
+        src/logical_camera_plugin.cpp
+)
+
+target_link_libraries(logical_camera_plugin
+        ${catkin_LIBRARIES}
+        ${GAZEBO_LIBRARIES}
+)
+
+add_message_files(
+        FILES
+        Model.msg
+        LogicalImage.msg
+)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 catkin_python_setup()
+generate_messages(
+        DEPENDENCIES
+        std_msgs
+        geometry_msgs
+        sensor_msgs
+)
+
+catkin_package(
+        INCLUDE_DIRS src include
+        CATKIN_DEPENDS
+        roscpp
+        rospy
+        sensor_msgs
+        std_msgs
+        message_runtime
+        gazebo_ros
+)
+catkin_install_python(PROGRAMS
+        src/aama_sim/simulation_controller/sensor_controller.py
+        src/aama_sim/simulation_controller/simulation_controller.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -106,53 +153,13 @@ catkin_python_setup()
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES aamas_sim
-#  CATKIN_DEPENDS gazebo_msgs gazebo_ros geometry_msgs rospy std_msgs tf turtlebot3 turtlebot3_msgs turtlebot3_simulations
-#  DEPENDS system_lib
-)
+#catkin_package(
+##  INCLUDE_DIRS include
+##  LIBRARIES aamas_sim
+##  CATKIN_DEPENDS gazebo_msgs gazebo_ros geometry_msgs rospy std_msgs tf turtlebot3 turtlebot3_msgs turtlebot3_simulations
+##  DEPENDS system_lib
+#)
 
-###########
-## Build ##
-###########
-
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-)
-
-## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/aamas_sim.cpp
-# )
-
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
-## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/aamas_sim_node.cpp)
-
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
 
 #############
 ## Install ##
@@ -163,11 +170,7 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-catkin_install_python(PROGRAMS
-  src/aama_sim/simulation_controller/sensor_controller.py
-  src/aama_sim/simulation_controller/simulation_controller.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
