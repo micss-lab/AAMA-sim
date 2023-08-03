@@ -11,6 +11,7 @@ Follow instructions through [here](https://docs.docker.com/desktop/windows/wsl/)
 
 ## Requirements for Ubuntu
 ### Install Docker Engine
+- This installation requires Ubuntu 20.04 LTS
 - Install required packages
   ```
   $ sudo apt-get update
@@ -79,7 +80,7 @@ These steps are same for both Ubuntu and WSL2.
 - Create catkin_ws directory
   ```
    $ cd
-   $ mkdir catkin_ws && cd catkin_ws
+   $ mkdir -p catkin_ws/src && cd catkin_ws
    $ catkin_make
   ```
 - Add catkin_ws to bashrc
@@ -120,7 +121,7 @@ These steps are same for both Ubuntu and WSL2.
   
 - Build catkin_ws
   ```
-   $ cd ~/catkin_ws/src
+   $ cd ~/catkin_ws
    $ catkin_make
   ```
   
@@ -140,6 +141,11 @@ These commands should both work for Ubuntu and WSL2 Ubuntu. However, WSL2 Ubuntu
 
 ## Install Python Packages
 Run these commands to install required Python packages
+
+- Install Pip if it doesn't exist
+  ```
+  $ sudo apt install python3-pip
+  ```
 
 - Install Python Packages
   ```

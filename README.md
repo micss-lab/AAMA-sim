@@ -8,7 +8,7 @@ This part assumes all prerequisite tools installed. If not please follow [here](
 - Create a Catkin Workspace
   ```
    $ cd ~
-   $ mkdir catkin_ws && cd catkin_ws
+   $ mkdir -p catkin_ws/src && cd catkin_ws
   ```
   
 - Clone AAMA-Sim Repository into `src` of Catkin Workspace
@@ -30,7 +30,7 @@ This part assumes all prerequisite tools installed. If not please follow [here](
    $ source ~/.bashrc
   ```
 
-- Verify Installation by Using `roscd`
+- Verify Installation by Using `roscd`. You should end up inside the project directory.
   ```
    $ cd ~
    $ roscd aama_sim
