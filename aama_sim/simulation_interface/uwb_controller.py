@@ -1,5 +1,6 @@
 import math
 import rclpy
+from rcl_interfaces.msg import ParameterDescriptor
 from rclpy.node import Node
 from rosidl_runtime_py.convert import message_to_ordereddict
 from tf2_msgs.msg import TFMessage
@@ -42,7 +43,7 @@ class UWBController(Node):
     def __init__(self):
         super().__init__('uwb_controller')
 
-        self.declare_parameter('robot_count')
+        self.declare_parameter('robot_count', ParameterDescriptor(description='Robots in the simulation'))
 
         self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
         self.robot_base_name = 'aama_robot_%s'

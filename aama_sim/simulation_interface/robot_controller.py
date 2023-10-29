@@ -1,4 +1,5 @@
 import rclpy
+from rcl_interfaces.msg import ParameterDescriptor
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 
@@ -13,7 +14,7 @@ class RobotController(Node):
     def __init__(self):
         super().__init__('robot_controller')
 
-        self.declare_parameter('robot_count')
+        self.declare_parameter('robot_count', ParameterDescriptor(description='Robots in the simulation'))
 
         self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
         self.robot_base_name = 'aama_robot_%s'

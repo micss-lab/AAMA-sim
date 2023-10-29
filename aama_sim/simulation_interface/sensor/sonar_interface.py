@@ -1,4 +1,5 @@
 import rclpy
+from rcl_interfaces.msg import ParameterDescriptor
 from rclpy.node import Node
 from rosidl_runtime_py.convert import message_to_ordereddict
 from sensor_msgs.msg import LaserScan
@@ -14,7 +15,7 @@ class SonarInterface(Node):
     def __init__(self):
         super().__init__('sonar_interface')
 
-        self.declare_parameter('robot_count')
+        self.declare_parameter('robot_count', ParameterDescriptor(description='Robots in the simulation'))
 
         self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
 
