@@ -251,8 +251,7 @@ def consumer_producer_with_threads_test():
             pose_comm.send(uav_pose_queue, pose)
             time.sleep(0.01)
 
-
 # if __name__ == "__main__":
-    # consumer_producer_test()
-    # request_response_test()
-    # consumer_producer_with_threads_test()
+# consumer_producer_test()
+# request_response_test()
+# consumer_producer_with_threads_test()

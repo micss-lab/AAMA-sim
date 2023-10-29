@@ -68,7 +68,7 @@
       </visual>
       <sensor name='gpu_lidar' type='gpu_lidar'>
         <pose>0 0 0 0 0 0</pose>
-        <topic>lidar2</topic>
+        <topic>/sonar</topic>
         <update_rate>10</update_rate>
         <lidar>
           <scan>
@@ -88,8 +88,9 @@
         <alwaysOn>1</alwaysOn>
         <visualize>true</visualize>
       </sensor>
+
       <sensor name="logical_camera" type="logical_camera">
-        <topic>logical_camera</topic>
+        <topic>/logical_camera</topic>
         <logical_camera>
           <near>0.55</near>
           <far>5.5</far>

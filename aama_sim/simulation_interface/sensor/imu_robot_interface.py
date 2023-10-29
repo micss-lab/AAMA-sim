@@ -1,18 +1,30 @@
-import rospy
-
+import rclpy
+from rclpy.node import Node
+from rosidl_runtime_py.convert import message_to_ordereddict
+from rosidl_runtime_py.set_message import set_message_fields
 from sensor_msgs.msg import Imu
-from rospy_message_converter import message_converter
 
 
-class ImuRobotInterface:
+class ImuRobotInterface(Node):
 
-    def __init__(self, robot_name):
-        self.robot_name = robot_name
+    def __init__(self):
+        super().__init__('minimal_subscriber')
 
-        self.sub = rospy.Subscriber('/%s/imu' % self.robot_name, Imu, self.robot_imu_callback, queue_size=1)
+        self.subscription = self.create_subscription(
+            Imu,
+            'imu',
+            self.robot_imu_callback,
+            10)
 
         self.imu_msg = None
 
-    def robot_imu_callback(self, data):
-        data.header.frame_id = self.robot_name
-        self.imu_msg = message_converter.convert_ros_message_to_dictionary(data)
+    def robot_imu_callback(self, msg):
+        self.imu_msg = message_to_ordereddict(msg)
+        print(self.imu_msg)
+
+
+
+if __name__ == '__main__':
+    rclpy.init()
+    sub = ImuRobotInterface()
+    rclpy.spin(sub)
