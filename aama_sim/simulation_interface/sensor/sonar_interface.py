@@ -1,13 +1,22 @@
-import rospy
-from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
-from aama_sim.simulation_interface.sensor.sonar_robot_interface import SonarRobotInterface
+import rclpy
+from rclpy.node import Node
+from rosidl_runtime_py.convert import message_to_ordereddict
+from sensor_msgs.msg import LaserScan
+
+try:
+    from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+except:
+    from build.aama_sim.aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
 
 
-class SonarInterface:
+class SonarInterface(Node):
 
-    def __init__(self, robot_count):
-        self.robot_count = robot_count
-        self.robot_base_name = 'tb3_%s'
+    def __init__(self):
+        super().__init__('sonar_interface')
+
+        self.declare_parameter('robot_count')
+
+        self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
 
         self.rabbitmq_interface = RabbitCommunication()
         self.robot_sonars = []
@@ -15,26 +24,28 @@ class SonarInterface:
         self.rabbit_queue_name = 'sonar'
         self.rabbitmq_interface.register_queue(self.rabbit_queue_name)
 
-        self.init_robot_sonar_subs()
+        self.subscription = self.create_subscription(
+            LaserScan,
+            'sonar',
+            self.sonar_callback,
+            10)
 
-    def init_robot_sonar_subs(self):
-        for i in range(self.robot_count):
-            robot_sonar = SonarRobotInterface(self.robot_base_name % i)
-            self.robot_sonars.append(robot_sonar)
+        self.sonar_msg = dict()
 
-    def send_sonar_packet(self):
-        sonar_packet = []
-        for robot_sonar in self.robot_sonars:
-            sonar_packet.append(robot_sonar.sonar_msg)
+    def sonar_callback(self, msg: LaserScan):
+        msg.header.frame_id = msg.header.frame_id.split('/')[0]
+        self.sonar_msg[msg.header.frame_id] = message_to_ordereddict(msg)
 
-        self.rabbitmq_interface.send(self.rabbit_queue_name, sonar_packet)
-
-    def dry_run(self):
-        while not rospy.is_shutdown():
-            self.send_sonar_packet()
+        self.rabbitmq_interface.send(self.rabbit_queue_name, list(self.sonar_msg.values()))
 
 
-# if __name__ == '__main__':
-#     rospy.init_node('test_imu')
-#     a = SonarInterface(3)
-#     a.dry_run()
+def main(args=None):
+    rclpy.init(args=args)
+    sonar_interface = SonarInterface()
+    rclpy.spin(sonar_interface)
+    sonar_interface.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

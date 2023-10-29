@@ -25,7 +25,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            # 'my_node_py = my_package_py.my_node_py:main'
+            'robot_controller = aama_sim.simulation_interface.robot_controller:main',
+            'uwb_controller = aama_sim.simulation_interface.uwb_controller:main',
+            'imu_interface = aama_sim.simulation_interface.sensor.imu_interface:main',
+            'sonar_interface = aama_sim.simulation_interface.sensor.sonar_interface:main',
         ],
     },
 )

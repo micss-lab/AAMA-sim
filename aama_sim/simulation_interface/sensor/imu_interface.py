@@ -1,14 +1,22 @@
-import rospy
-from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
-from aama_sim.simulation_interface.sensor.imu_robot_interface import ImuRobotInterface
+import rclpy
+from rclpy.node import Node
+from rosidl_runtime_py.convert import message_to_ordereddict
 from sensor_msgs.msg import Imu
 
+try:
+    from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+except:
+    from build.aama_sim.aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
 
-class ImuInterface:
 
-    def __init__(self, robot_count):
-        self.robot_count = robot_count
-        self.robot_base_name = 'tb3_%s'
+class ImuInterface(Node):
+
+    def __init__(self):
+        super().__init__('imu_interface')
+
+        self.declare_parameter('robot_count')
+
+        self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
 
         self.rabbitmq_interface = RabbitCommunication()
         self.robot_imus = []
@@ -16,26 +24,28 @@ class ImuInterface:
         self.rabbit_queue_name = 'imu'
         self.rabbitmq_interface.register_queue(self.rabbit_queue_name)
 
-        self.init_robot_imu_subs()
+        self.subscription = self.create_subscription(
+            Imu,
+            'imu',
+            self.imu_callback,
+            10)
 
-    def init_robot_imu_subs(self):
-        for i in range(self.robot_count):
-            robot_imu = ImuRobotInterface(self.robot_base_name % i)
-            self.robot_imus.append(robot_imu)
+        self.imu_msg = dict()
 
-    def send_imu_packet(self):
-        imu_packet = []
-        for robot_imu in self.robot_imus:
-            imu_packet.append(robot_imu.imu_msg)
+    def imu_callback(self, msg: Imu):
+        msg.header.frame_id = msg.header.frame_id.split('/')[0]
+        self.imu_msg[msg.header.frame_id] = message_to_ordereddict(msg)
 
-        self.rabbitmq_interface.send(self.rabbit_queue_name, imu_packet)
-
-    def dry_run(self):
-        while not rospy.is_shutdown():
-            self.send_imu_packet()
+        self.rabbitmq_interface.send(self.rabbit_queue_name, list(self.imu_msg.values()))
 
 
-# if __name__ == '__main__':
-#     rospy.init_node('test_imu')
-#     a = ImuInterface(3)
-#     a.dry_run()
+def main(args=None):
+    rclpy.init(args=args)
+    imu_interface = ImuInterface()
+    rclpy.spin(imu_interface)
+    imu_interface.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

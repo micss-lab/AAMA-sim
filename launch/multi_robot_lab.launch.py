@@ -54,6 +54,9 @@ def generate_launch_description():
     ros_gz_bridge_launch = PathJoinSubstitution([pkg_aama_sim,
                                                  'ros_gz_bridge.launch.py'])
 
+    robot_controller_launch = PathJoinSubstitution([pkg_aama_sim,
+                                                    'robot_controller.launch.py'])
+
     # Gazebo launch args
     gz_args = DeclareLaunchArgument(
         'gz_args',
@@ -65,6 +68,14 @@ def generate_launch_description():
         launch_arguments=[
             ('robot_name', ROBOT_TYPE),
             ('namespace', BASE_ROBOT_NAME),
+            ('robot_count', str(ROBOT_COUNT))
+        ]
+    )
+
+    controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([robot_controller_launch]),
+        launch_arguments=[
+            ('robot_name', ROBOT_TYPE),
             ('robot_count', str(ROBOT_COUNT))
         ]
     )
@@ -87,4 +98,5 @@ def generate_launch_description():
     ld.add_action(multi_robot_group_action)
     ld.add_action(robot_spawn_actions)
     ld.add_action(gz_bridge)
+    ld.add_action(controller)
     return ld

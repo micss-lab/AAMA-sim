@@ -1,70 +1,117 @@
 import math
-import rospy
+import rclpy
+from rclpy.node import Node
+from rosidl_runtime_py.convert import message_to_ordereddict
+from tf2_msgs.msg import TFMessage
 
-from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
-from tf.transformations import euler_from_quaternion, quaternion_from_euler
-from gazebo_msgs.msg import ModelStates
-from rospy_message_converter import message_converter
-from turtlebot3_msgs.msg import SensorState
+try:
+    from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+except:
+    from build.aama_sim.aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+
+
+def quaternion_to_euler(w, x, y, z):
+    """
+    Convert a quaternion to Euler angles (yaw, pitch, and roll) in radians.
+    The quaternion should be provided as four values (w, x, y, z).
+    """
+
+    # Calculate the Euler angles
+    t0 = +2.0 * (w * x + y * z)
+    t1 = +1.0 - 2.0 * (x * x + y * y)
+    roll_x = math.atan2(t0, t1)
+
+    t2 = +2.0 * (w * y - z * x)
+    t2 = +1.0 if t2 > +1.0 else t2
+    t2 = -1.0 if t2 < -1.0 else t2
+    pitch_y = math.asin(t2)
+
+    t3 = +2.0 * (w * z + x * y)
+    t4 = +1.0 - 2.0 * (y * y + z * z)
+    yaw_z = math.atan2(t3, t4)
+
+    return yaw_z, pitch_y, roll_x  # in radians
 
 
 def convert_quaternion_orientation_to_euler(ori_dict: dict):
-    orientation_list = [ori_dict['x'], ori_dict['y'], ori_dict['z'], ori_dict['w']]
-    return euler_from_quaternion(orientation_list)
+    return quaternion_to_euler(ori_dict['x'], ori_dict['y'], ori_dict['z'], ori_dict['w'])
 
 
-class UWBController:
+class UWBController(Node):
 
-    def __init__(self, robot_count):
-        self.robot_count = robot_count
-        self.robot_base_name = 'tb3_%s'
+    def __init__(self):
+        super().__init__('uwb_controller')
+
+        self.declare_parameter('robot_count')
+
+        self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
+        self.robot_base_name = 'aama_robot_%s'
+        self.robot_base_topic = '/model/aama_robot_%s/pose_static'
 
         self.rabbitmq_interface = RabbitCommunication()
-        self.uwb_sub = rospy.Subscriber('/gazebo/model_states', ModelStates, self.robot_pos_callback, queue_size=1)
 
         self.rabbit_queue_name = 'uwb'
         self.rabbitmq_interface.register_queue(self.rabbit_queue_name)
+
+        self.robot_dict = dict()
+        self.init_subscribers()
+
+        timer_period = 0.05  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+    def init_subscribers(self):
+        for i in range(self.robot_count):
+            self.create_subscription(
+                TFMessage,
+                self.robot_base_topic % i,
+                self.robot_pos_callback,
+                10
+            )
 
     def init_rabbit_queue(self):
         queue_base_name = self.robot_base_name + '_pos'
         for i in range(self.robot_count):
             self.rabbitmq_interface.register_queue(queue_base_name % i)
 
-    def robot_pos_callback(self, data: ModelStates):
-        robot_list = []
-        for i in range(self.robot_count):
-            robot_name = self.robot_base_name % i
-            try:
-                pos_index = data.name.index(robot_name)
-            except:
-                continue
-            pos_dict = message_converter.convert_ros_message_to_dictionary(data.pose[pos_index])
-
-            refined_pos_dict = self.refine_uwb_packet(pos_dict, i)
-            robot_list.append(refined_pos_dict)
-        self.rabbitmq_interface.send(self.rabbit_queue_name, robot_list)
+    def robot_pos_callback(self, msg: TFMessage):
+        for tf_msg in msg.transforms:
+            # if re.fullmatch(r'aama_robot_\d+', tf_msg.header.frame_id) is not None:
+            if tf_msg.header.frame_id == 'visualize_lidar_world':
+                pos_dict = message_to_ordereddict(tf_msg)
+                refined_pos_dict = self.refine_uwb_packet(pos_dict, tf_msg.child_frame_id)
+                self.robot_dict[tf_msg.child_frame_id] = refined_pos_dict
 
     def refine_uwb_packet(self, pos_dict, robot_id):
-        pos_dict['robot_id'] = robot_id
+        refined_pos_dict = dict()
+        refined_pos_dict['robot_id'] = robot_id.split('_')[-1]
+        refined_pos_dict['header'] = pos_dict['header']
 
-        orientation_quaternion = pos_dict['orientation']
+        orientation_quaternion = pos_dict['transform']['rotation']
         orientation_euler = convert_quaternion_orientation_to_euler(orientation_quaternion)
-        pos_dict['orientation'] = {
+        refined_pos_dict['orientation'] = {
             'x': round(math.degrees(orientation_euler[0]), 3),  # roll
             'y': round(math.degrees(orientation_euler[1]), 3),  # pitch
             'z': round(math.degrees(orientation_euler[2]), 3)  # yaw
         }
-        pos_dict['position'] = {
-            'x': round(pos_dict['position']['x'], 3),
-            'y': round(pos_dict['position']['y'], 3),
-            'z': round(pos_dict['position']['z'], 3),
+        refined_pos_dict['position'] = {
+            'x': round(pos_dict['transform']['translation']['x'], 3),
+            'y': round(pos_dict['transform']['translation']['y'], 3),
+            'z': round(pos_dict['transform']['translation']['z'], 3),
         }
 
-        return pos_dict
+        return refined_pos_dict
 
-    def dry_run(self):
-        rospy.spin()
+    def timer_callback(self):
+        self.rabbitmq_interface.send(self.rabbit_queue_name, list(self.robot_dict.values()))
 
-# if __name__ == '__main__':
-#     a = UWBController(3)
-#     a.run()
+
+def main(args=None):
+    rclpy.init(args=args)
+    uwb_controller = UWBController()
+    rclpy.spin(uwb_controller)
+    uwb_controller.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()
