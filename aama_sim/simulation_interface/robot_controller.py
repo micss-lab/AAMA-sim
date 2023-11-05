@@ -1,17 +1,23 @@
-import sys
-import os
-import rospy
-import json
-from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+import rclpy
+from rclpy.node import Node
 from geometry_msgs.msg import Twist
 
+try:
+    from aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
+except:
+    from build.aama_sim.aama_sim.comm_interface.rabbitmq_interface import RabbitCommunication
 
-class RobotController:
 
-    def __init__(self, robot_count):
-        self.robot_count = robot_count
-        self.robot_base_name = 'tb3_%s'
-        self.robot_ros_topic_base = '/%s/cmd_vel' % self.robot_base_name
+class RobotController(Node):
+
+    def __init__(self):
+        super().__init__('robot_controller')
+
+        self.declare_parameter('robot_count', 1)
+
+        self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
+        self.robot_base_name = 'aama_robot_%s'
+        self.robot_ros_topic_base = '/model/%s/cmd_vel' % self.robot_base_name
 
         self.rabbitmq_interface = RabbitCommunication()
 
@@ -24,13 +30,16 @@ class RobotController:
 
     def init_ros_pubs(self):
         for i in range(self.robot_count):
-            pub = rospy.Publisher(self.robot_ros_topic_base % i, Twist, queue_size=1)
+            pub = self.create_publisher(
+                Twist,
+                self.robot_ros_topic_base % i,
+                10
+            )
             self.ros_pub_list.append(pub)
 
     def rabbit_callback(self, data):
         print(" [x] Received %r" % data)
         for robot_msg in data:
-
             try:
                 robot_id = robot_msg['robot_id']
                 vel_msg = Twist()
@@ -49,6 +58,13 @@ class RobotController:
         self.rabbitmq_interface.start_listening()
 
 
-# if __name__ == '__main__':
-#     a = RobotController(3)
-#     a.run()
+def main(args=None):
+    rclpy.init(args=args)
+    robot_controller = RobotController()
+    robot_controller.run()
+    robot_controller.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

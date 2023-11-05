@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<robot name="aama_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:property name="model_name" value="$(arg model_name)"/>
+
+  <xacro:include filename="$(find aama_sim)/urdf/common_base.urdf.xacro"/>
+
+  <xacro:base_robot/>
+
+</robot>
