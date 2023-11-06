@@ -29,7 +29,7 @@ class RabbitCommunication:
 
     def init_request_queues(self):
         if not self.request_queues_initialized:
-            queue_declaration = self.channel.queue_declare(queue='', auto_delete=True)
+            queue_declaration = self.channel.queue_declare(queue='', auto_delete=False)
             self.response_queue = queue_declaration.method.queue
             self.channel.basic_consume(queue=self.response_queue,
                                        on_message_callback=self.on_response,
@@ -39,7 +39,7 @@ class RabbitCommunication:
     def declare_queue(self, queue_name):
         try:
             self.channel.queue_declare(queue=queue_name,
-                                       auto_delete=True,
+                                       auto_delete=False,
                                        arguments={"x-max-length": 1,
                                                   "x-overflow": "drop-head"})
         except pika.exceptions.ChannelClosedByBroker as ex:
