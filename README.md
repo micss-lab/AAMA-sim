@@ -27,7 +27,7 @@ This part assumes all prerequisite tools installed. If not please follow [here](
 - Add the ROS2 Workspace and Gazebo Model Path to Bashrc
   ```
    echo "source ~/ros2_ws/install/local_setup.bash" >> ~/.bashrc
-   echo "export IGN_GAZEBO_RESOURCE_PATH=IGN_GAZEBO_RESOURCE_PATH:~/ros2_ws/src/AAMA-sim/models" >> ~/.bashrc
+   echo "export IGN_GAZEBO_RESOURCE_PATH=:~/ros2_ws/src/AAMA-sim/models" >> ~/.bashrc
    source ~/.bashrc
   ```
 
