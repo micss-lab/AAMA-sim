@@ -44,6 +44,7 @@ AAMA-ROS Simulation and Testing Environment
   ```
 
     - Make Sure RabbitMQ Docker Container is up and running. If not use commands below to create a RabbitMQ container.
+    - Dont forget to click the play button on the bottom left of Gazebo window.
 
 ### How to change robot count in Simulation
 
