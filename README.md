@@ -13,7 +13,7 @@ AAMA-ROS Simulation and Testing Environment
 - Clone AAMA-Sim Repository into `src` of ROS2 Workspace
   ```
    cd ~/ros2_ws/src
-   git clone https://github.com/micss-lab/AAMA-sim.git -b ros2-devel
+   git clone https://github.com/micss-lab/AAMA-sim.git
   ```
 
 - Please install the requirements. Follow [here](setup.md).
@@ -44,6 +44,7 @@ AAMA-ROS Simulation and Testing Environment
   ```
 
     - Make Sure RabbitMQ Docker Container is up and running. If not use commands below to create a RabbitMQ container.
+    - Dont forget to click the play button on the bottom left of Gazebo window.
 
 ### How to change robot count in Simulation
 
@@ -225,52 +226,52 @@ AAMA-ROS Simulation and Testing Environment
   Type: `RobotMsgs/UWB.java` ([Check here](https://github.com/micss-lab/AAMA-example-agents/blob/main/src/main/java/RobotMsgs/UWB.java))
 - Message Format:
 
-```json5
-[
-  {
-    "robot_id": "1",
-    "header": {
-      "stamp": {
-        "sec": 2,
-        "nanosec": 720000000
+  ```json5
+  [
+    {
+      "robot_id": "1",
+      "header": {
+        "stamp": {
+          "sec": 2,
+          "nanosec": 720000000
+        },
+        "frame_id": "aama_robot_1"
       },
-      "frame_id": "aama_robot_1"
-    },
-    "orientation": {
-      "x": -180,
-      // All angles here are in degrees
-      "y": 0,
-      "z": 0
-    },
-    "position": {
-      "x": 0,
-      // All distances are in meters
-      "y": 12,
-      "z": 0.375
-    }
-  },
-  {
-    "robot_id": "3",
-    "header": {
-      "stamp": {
-        "sec": 2,
-        "nanosec": 720000000
+      "orientation": {
+        "x": -180,
+        // All angles here are in degrees
+        "y": 0,
+        "z": 0
       },
-      "frame_id": "aama_robot_3"
+      "position": {
+        "x": 0,
+        // All distances are in meters
+        "y": 12,
+        "z": 0.375
+      }
     },
-    "orientation": {
-      "x": -180,
-      "y": 0,
-      "z": 0
-    },
-    "position": {
-      "x": 4,
-      "y": 0,
-      "z": 0.375
+    {
+      "robot_id": "3",
+      "header": {
+        "stamp": {
+          "sec": 2,
+          "nanosec": 720000000
+        },
+        "frame_id": "aama_robot_3"
+      },
+      "orientation": {
+        "x": -180,
+        "y": 0,
+        "z": 0
+      },
+      "position": {
+        "x": 4,
+        "y": 0,
+        "z": 0.375
+      }
     }
-  }
-]
-```
+  ]
+  ```
 
 ## Useful Links
 
