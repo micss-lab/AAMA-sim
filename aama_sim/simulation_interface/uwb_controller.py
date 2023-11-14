@@ -85,6 +85,7 @@ class UWBController(Node):
         refined_pos_dict = dict()
         refined_pos_dict['robot_id'] = robot_id.split('_')[-1]
         refined_pos_dict['header'] = pos_dict['header']
+        refined_pos_dict['header']['frame_id'] = self.robot_base_name % refined_pos_dict['robot_id']
 
         orientation_quaternion = pos_dict['transform']['rotation']
         orientation_euler = convert_quaternion_orientation_to_euler(orientation_quaternion)

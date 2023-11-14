@@ -34,7 +34,11 @@ class SonarInterface(Node):
 
     def sonar_callback(self, msg: LaserScan):
         msg.header.frame_id = msg.header.frame_id.split('/')[0]
-        self.sonar_msg[msg.header.frame_id] = message_to_ordereddict(msg)
+
+        msg_dict = message_to_ordereddict(msg)
+        msg_dict['ranges'] = list(map(lambda x: (msg.range_max + 1) if x == float("inf") else x, msg.ranges))
+
+        self.sonar_msg[msg.header.frame_id] = msg_dict
 
         self.rabbitmq_interface.send(self.rabbit_queue_name, list(self.sonar_msg.values()))
 

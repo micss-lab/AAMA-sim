@@ -11,6 +11,15 @@ Follow instructions through [here](https://docs.docker.com/desktop/windows/wsl/)
 
 ## Requirements for Ubuntu
 - This installation requires Ubuntu 22.04 LTS
+
+### Install Git
+
+- Install Git
+  ```
+  sudo apt update
+  sudo apt install git
+  ```
+
 ### Install Docker Engine
 
 - Make the `install_docker.sh` script executable.
@@ -36,6 +45,19 @@ This will install all dependencies and packages required.
 - Run the script.
   ```
   sudo ./install_ros2.sh
+  ```
+
+### Install Gazebo Fortress for Ubuntu
+
+This will install all dependencies and packages required.
+
+- Make the `install_gazebo.sh` script executable.
+  ```
+  chmod +x install_gazebo.sh
+  ```
+- Run the script.
+  ```
+  sudo ./install_gazebo.sh
   ```
   
 ### Install RabbitMQ Docker
