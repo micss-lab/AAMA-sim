@@ -22,9 +22,14 @@ WORLD_NAME_DICT = {
     'house': 'small_house.world',
     'empty': 'empty.world'
 }
+WORLD_START_COORDS = {
+    'house': [(-3.5, -2.3), (-0.4, -2.3), (-0.4, 0), (-3.5, 0.5)],
+    'warehouse': [(-2.5, -2.3), (0.4, -2.3), (0.4, 0), (-2.5, 0.5)],
+    'empty': [(-4, -4), (0, -4), (0, 0), (-4, 0)]
+}
 
 
-def generate_robot_spawn_nodes(robot_count):
+def generate_robot_spawn_nodes(robot_count, world_name):
     def is_inside_polygon(point, polygon):
         """Check if a point is inside a polygon using the ray-casting algorithm."""
         x, y = point
@@ -54,7 +59,7 @@ def generate_robot_spawn_nodes(robot_count):
         return points
 
     # Define the quadrilateral vertices
-    quadrilateral = [(-2.5, -2.3), (0.4, -2.3), (0.4, 0), (-2.5, 0.5)]  # Example: A square
+    quadrilateral = WORLD_START_COORDS[world_name]
 
     nodes = []
     distance = 0.3
@@ -111,7 +116,7 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
 
-    robot_spawn_actions = generate_robot_spawn_nodes(int(robot_count))
+    robot_spawn_actions = generate_robot_spawn_nodes(int(robot_count), world_name)
 
     gz_spawn = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gz_sim_launch]),
