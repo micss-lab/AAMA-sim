@@ -38,19 +38,23 @@ AAMA-ROS Simulation and Testing Environment
 ### How to Run Multi Robot Simulation
 
 - Run with Multiple Robots. This Launch file will open a Gazebo instance with
-  3 Robot instances.
+  2 Robot instances in Warehouse world by default.
   ```
-   ros2 launch aama_sim multi_robot_lab.launch.py
+   ros2 launch aama_sim aama_sim.launch.py
   ```
 
     - Make Sure RabbitMQ Docker Container is up and running. If not use commands below to create a RabbitMQ container.
 
-### How to change robot count in Simulation
+### How to Change Robot Count and World Environment in Simulation
 
-- In order to change the number of robots in the simulation you have to change a parameter
-  in `multi_robot_lab.launch.py` file
-    - Change the `ROBOT_COUNT` parameter to an integer between 1 and 24.
-    - Execute command `colcon build` in `ros2_ws` directory.
+- In order to change the number of robots in the simulation you have to add some command line arguments to the launch file.
+  ```
+   ros2 launch aama_sim aama_sim.launch.py world_name:='house' robot_count:=4
+  ```
+  to get the detailed description of the arguments you can use the following command.
+  ```
+   ros2 launch aama_sim aama_sim.launch.py -s
+  ```
 
 ### Sensor and Control Messages
 

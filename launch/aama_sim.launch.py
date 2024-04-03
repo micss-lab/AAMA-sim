@@ -13,7 +13,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 
-ROBOT_COUNT = 8
+ROBOT_COUNT = 2
 BASE_ROBOT_NAME = 'aama_robot_'
 ROBOT_TYPE = 'aama_robot'
 WORLD_NAME = 'no_roof_small_warehouse.world'
