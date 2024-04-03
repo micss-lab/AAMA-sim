@@ -38,20 +38,62 @@ AAMA-ROS Simulation and Testing Environment
 ### How to Run Multi Robot Simulation
 
 - Run with Multiple Robots. This Launch file will open a Gazebo instance with
-  3 Robot instances.
+  2 Robot instances in Warehouse world by default.
   ```
-   ros2 launch aama_sim multi_robot_lab.launch.py
+   ros2 launch aama_sim aama_sim.launch.py
   ```
 
     - Make Sure RabbitMQ Docker Container is up and running. If not use commands below to create a RabbitMQ container.
     - Dont forget to click the play button on the bottom left of Gazebo window.
 
-### How to change robot count in Simulation
+### How to Change Robot Count and World Environment in Simulation
 
-- In order to change the number of robots in the simulation you have to change a parameter
-  in `multi_robot_lab.launch.py` file
-    - Change the `ROBOT_COUNT` parameter to an integer between 1 and 24.
-    - Execute command `colcon build` in `ros2_ws` directory.
+- In order to change the number of robots in the simulation you have to add some command line arguments to the launch
+  file.
+  ```
+   ros2 launch aama_sim aama_sim.launch.py world_name:='house' robot_count:=4
+  ```
+  to get the detailed description of the arguments you can use the following command.
+  ```
+   ros2 launch aama_sim aama_sim.launch.py -s
+  ```
+
+#### World Environments
+
+- Available World Environments
+    - `Warehouse`
+      ![Warehouse](docs/warehouse_world.png)
+    - `House`
+      ![House](docs/house_world.png)
+    - `Empty`
+      ![Empty](docs/empty_world.png)
+
+### How to Modify the Simulation Environment
+
+The worlds in AAMA-sim is defined by the [SDF World](http://sdformat.org/spec?ver=1.11&elem=world) standard.
+To modify the simulation environment, you can modify the respective world file under the `worlds` folder in
+the `AAMA-sim` package.
+
+Developers can add/remove models, change the lighting, and modify the physics properties of the world. By following the
+Gazebo Sim [documentation](https://gazebosim.org/docs/citadel/sdf_worlds).
+
+### How to Modify the Robot Model
+
+The robot model in AAMA-sim is defined by the [SDF Model](http://sdformat.org/spec?ver=1.11&elem=model) standard.
+To modify the robot model, you can modify the `aama_robot.sdf` file under the `models/aama_robot` folder in
+the `AAMA-sim` package.
+
+Developers can add/remove sensors, change the physical properties, and modify the visual properties of the robot model.
+By following the Gazebo Sim [documentation](https://gazebosim.org/docs/citadel/building_robot).
+
+However, after adding a new sensor, you need to implement a sensor interface in the `AAMA-sim` package to publish the
+sensor data to the RabbitMQ message broker.
+In order to be able to publish the sensor data to the RabbitMQ message broker, you need to create a new RabbitMQ message
+queue and publish the sensor data to the created message queue.
+You can check the existing sensor interfaces in the `AAMA-sim` package to implement a new sensor interface.
+
+An example empty sensor interface is provided in the `AAMA-sim` package
+under `aama_sim/simulation_interface/empty_sensor_interface.py` to help you implement a new sensor interface.
 
 ### Sensor and Control Messages
 

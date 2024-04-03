@@ -3,7 +3,7 @@
   <model name='aama_robot'>
     <pose>0 0 0.12 0 0 0.0</pose>
     <link name='chassis'>
-      <pose>-0.151427 -0 0.175 0 -0 0</pose>
+      <pose>-0.0151427 -0 0.0175 0 -0 0</pose>
       <inertial>
         <mass>1.14395</mass>
         <inertia>
@@ -18,7 +18,7 @@
       <visual name='visual'>
         <geometry>
           <box>
-            <size>2.01142 1 0.568726</size>
+            <size>0.201142 0.1 0.0568726</size>
           </box>
         </geometry>
         <material>
@@ -30,7 +30,7 @@
       <collision name='collision'>
         <geometry>
           <box>
-            <size>2.01142 1 0.568726</size>
+            <size>0.201142 0.1 0.0568726</size>
           </box>
         </geometry>
       </collision>
@@ -43,7 +43,7 @@
     </link>
 
     <link name="lidar_link">
-      <pose>0 0 0.5 0 0 0</pose>
+      <pose>0 0 0.05 0 0 0</pose>
       <inertial>
         <mass>0.1</mass>
         <inertia>
@@ -55,14 +55,14 @@
       <collision name="collision">
         <geometry>
           <box>
-            <size>0.1 0.1 0.1</size>
+            <size>0.01 0.01 0.01</size>
           </box>
         </geometry>
       </collision>
       <visual name="visual">
         <geometry>
           <box>
-            <size>0.1 0.1 0.1</size>
+            <size>0.01 0.01 0.01</size>
           </box>
         </geometry>
       </visual>
@@ -104,7 +104,7 @@
     </link>
 
     <link name='left_wheel'>
-      <pose>0.554283 0.625029 -0.025 -1.5707 0 0</pose>
+      <pose>0.0554283 0.0625029 -0.0025 -1.5707 0 0</pose>
       <inertial>
         <mass>2</mass>
         <inertia>
@@ -119,7 +119,7 @@
       <visual name='visual'>
         <geometry>
           <sphere>
-            <radius>0.3</radius>
+            <radius>0.03</radius>
           </sphere>
         </geometry>
         <material>
@@ -131,14 +131,14 @@
       <collision name='collision'>
         <geometry>
           <sphere>
-            <radius>0.3</radius>
+            <radius>0.03</radius>
           </sphere>
         </geometry>
       </collision>
     </link>
 
     <link name='right_wheel'>
-      <pose>0.554282 -0.625029 -0.025 -1.5707 0 0</pose>
+      <pose>0.0554282 -0.0625029 -0.0025 -1.5707 0 0</pose>
       <inertial>
         <mass>2</mass>
         <inertia>
@@ -153,7 +153,7 @@
       <visual name='visual'>
         <geometry>
           <sphere>
-            <radius>0.3</radius>
+            <radius>0.03</radius>
           </sphere>
         </geometry>
         <material>
@@ -165,14 +165,14 @@
       <collision name='collision'>
         <geometry>
           <sphere>
-            <radius>0.3</radius>
+            <radius>0.03</radius>
           </sphere>
         </geometry>
       </collision>
     </link>
 
     <link name='caster'>
-      <pose>-0.957138 -0 -0.125 0 -0 0</pose>
+      <pose>-0.0957138 -0 -0.0125 0 -0 0</pose>
       <inertial>
         <mass>1</mass>
         <inertia>
@@ -187,7 +187,7 @@
       <visual name='visual'>
         <geometry>
           <sphere>
-            <radius>0.2</radius>
+            <radius>0.02</radius>
           </sphere>
         </geometry>
         <material>
@@ -199,7 +199,7 @@
       <collision name='collision'>
         <geometry>
           <sphere>
-            <radius>0.2</radius>
+            <radius>0.02</radius>
           </sphere>
         </geometry>
       </collision>
