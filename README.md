@@ -1,7 +1,10 @@
 # AAMA-Sim
 
-AAMA-ROS Simulation and Testing Environment
-
+A multi-agent enhanced simulation tool can leverage programming abstraction
+by empowering the development, validation, and system realization phases. The
+software agent code used in the simulation can also be reused for the physical
+implementation, as the agent paradigm provides higher-level programming and
+modularisation for the target system.
 ## Installation
 
 - Create a ROS2 Workspace
