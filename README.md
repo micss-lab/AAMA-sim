@@ -326,5 +326,6 @@ Examples in AAMA-Sim
 Different worlds to import
 - https://github.com/mlherd/Dataset-of-Gazebo-Worlds-Models-and-Maps?tab=readme-ov-file
 - https://automaticaddison.com/useful-world-files-for-gazebo-and-ros-2-simulations/#Worlds
+
 Different Robots to import:
 - https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/
