@@ -43,10 +43,11 @@ class UWBController(Node):
         super().__init__('uwb_controller')
 
         self.declare_parameter('robot_count', 1)
+        self.declare_parameter('robot_name', "aama_robot")
 
         self.robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
-        self.robot_base_name = 'aama_robot_%s'
-        self.robot_base_topic = '/model/aama_robot_%s/pose_static'
+        self.robot_base_name = self.get_parameter('robot_name').get_parameter_value().string_value + '_%s'
+        self.robot_base_topic = '/model/%s/pose_static' % self.robot_base_name
 
         self.rabbitmq_interface = RabbitCommunication()
 

@@ -16,6 +16,8 @@ from launch_ros.actions import Node
 ROBOT_COUNT = 2
 BASE_ROBOT_NAME = 'aama_robot_'
 ROBOT_TYPE = 'aama_robot'
+# BASE_ROBOT_NAME = 'x1_'
+# ROBOT_TYPE = 'x1'
 WORLD_NAME = 'no_roof_small_warehouse.world'
 WORLD_NAME_DICT = {
     'warehouse': 'no_roof_small_warehouse.world',

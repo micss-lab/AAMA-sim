@@ -10,7 +10,7 @@ PASSWORD = 'dogu'
 
 
 class RabbitCommunication:
-    def __init__(self, host='127.0.0.1', port=5672):
+    def __init__(self, host='10.211.55.2', port=5672):
         self.host = host
         self.port = port
         self.connect()
