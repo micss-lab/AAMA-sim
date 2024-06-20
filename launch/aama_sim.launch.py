@@ -14,10 +14,10 @@ from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 
 ROBOT_COUNT = 2
-BASE_ROBOT_NAME = 'aama_robot_'
-ROBOT_TYPE = 'aama_robot'
-# BASE_ROBOT_NAME = 'x1_'
-# ROBOT_TYPE = 'x1'
+# BASE_ROBOT_NAME = 'aama_robot_'
+# ROBOT_TYPE = 'aama_robot'
+# BASE_ROBOT_NAME = '%s_'
+ROBOT_TYPE = 'x1'
 WORLD_NAME = 'no_roof_small_warehouse.world'
 WORLD_NAME_DICT = {
     'warehouse': 'no_roof_small_warehouse.world',
@@ -31,7 +31,7 @@ WORLD_START_COORDS = {
 }
 
 
-def generate_robot_spawn_nodes(robot_count, world_name):
+def generate_robot_spawn_nodes(robot_count, world_name, robot_type):
     def is_inside_polygon(point, polygon):
         """Check if a point is inside a polygon using the ray-casting algorithm."""
         x, y = point
@@ -74,11 +74,11 @@ def generate_robot_spawn_nodes(robot_count, world_name):
             Node(
                 package='ros_ign_gazebo',
                 executable='create',
-                arguments=['-name', BASE_ROBOT_NAME + str(index),
+                arguments=['-name', '%s_' % robot_type + str(index),
                            '-x', str(x),
                            '-y', str(y),
                            '-z', '0.2',
-                           '-file', ROBOT_TYPE],
+                           '-file', robot_type],
                 output='screen'
             )
         )
@@ -92,6 +92,7 @@ def launch_setup(context, *args, **kwargs):
 
     robot_count = LaunchConfiguration('robot_count').perform(context)
     world_name = LaunchConfiguration('world_name').perform(context)
+    robot_type = LaunchConfiguration('robot_type').perform(context)
 
     ros_gz_bridge_launch = PathJoinSubstitution([pkg_aama_sim,
                                                  'ros_gz_bridge.launch.py'])
@@ -104,8 +105,8 @@ def launch_setup(context, *args, **kwargs):
     gz_bridge = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([ros_gz_bridge_launch]),
         launch_arguments=[
-            ('robot_name', ROBOT_TYPE),
-            ('namespace', BASE_ROBOT_NAME),
+            ('robot_name', robot_type),
+            ('namespace', '%s_' % robot_type),
             ('robot_count', str(robot_count))
         ]
     )
@@ -113,12 +114,12 @@ def launch_setup(context, *args, **kwargs):
     controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([robot_controller_launch]),
         launch_arguments=[
-            ('robot_name', ROBOT_TYPE),
+            ('robot_name', robot_type),
             ('robot_count', str(robot_count))
         ]
     )
 
-    robot_spawn_actions = generate_robot_spawn_nodes(int(robot_count), world_name)
+    robot_spawn_actions = generate_robot_spawn_nodes(int(robot_count), world_name, robot_type)
 
     gz_spawn = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gz_sim_launch]),
@@ -145,6 +146,11 @@ def generate_launch_description():
             'robot_count',
             default_value=str(ROBOT_COUNT),
             description='Number of robots to spawn in the simulation'
+        ),
+        DeclareLaunchArgument(
+            'robot_type',
+            default_value='x1',
+            description='Type of robot to spawn in the simulation'
         ),
         OpaqueFunction(function=launch_setup)
     ])
