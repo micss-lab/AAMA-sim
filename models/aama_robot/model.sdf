@@ -101,6 +101,24 @@
         <always_on>true</always_on>
         <update_rate>10</update_rate>
       </sensor>
+      <sensor name="camera_front" type="camera">
+        <pose>0 0 0.2 0 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>12</update_rate>
+        <camera name="camera_front">
+          <horizontal_fov>1.0472</horizontal_fov>
+          <image>
+              <width>1280</width>
+              <height>960</height>
+              <format>R8G8B8</format>
+          </image>
+          <clip>
+              <near>0.01</near>
+              <far>300</far>
+          </clip>
+          <topic>camera</topic>
+        </camera>
+      </sensor>
     </link>
 
     <link name='left_wheel'>
@@ -174,7 +192,7 @@
     <link name='caster'>
       <pose>-0.0957138 -0 -0.0125 0 -0 0</pose>
       <inertial>
-        <mass>1</mass>
+        <mass>3</mass>
         <inertia>
           <ixx>0.1</ixx>
           <ixy>0</ixy>

@@ -16,34 +16,47 @@ ARGUMENTS = [
 
 def generate_launch_description():
     robot_count = LaunchConfiguration('robot_count')
+    robot_name = LaunchConfiguration('robot_name')
 
     controller_group_actions = GroupAction([
         Node(
             package='aama_sim',
             executable='robot_controller',
             parameters=[
-                {'robot_count': robot_count}
+                {
+                    'robot_count': robot_count,
+                    'robot_name': robot_name
+                },
             ],
         ),
         Node(
             package='aama_sim',
             executable='uwb_controller',
             parameters=[
-                {'robot_count': robot_count},
+                {
+                    'robot_count': robot_count,
+                    'robot_name': robot_name
+                },
             ],
         ),
         Node(
             package='aama_sim',
             executable='imu_interface',
             parameters=[
-                {'robot_count': robot_count},
+                {
+                    'robot_count': robot_count,
+                    'robot_name': robot_name
+                },
             ],
         ),
         Node(
             package='aama_sim',
             executable='sonar_interface',
             parameters=[
-                {'robot_count': robot_count},
+                {
+                    'robot_count': robot_count,
+                    'robot_name': robot_name
+                },
             ],
         )
     ])

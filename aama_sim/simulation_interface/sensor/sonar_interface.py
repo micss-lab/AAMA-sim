@@ -36,7 +36,7 @@ class SonarInterface(Node):
         msg.header.frame_id = msg.header.frame_id.split('/')[0]
 
         msg_dict = message_to_ordereddict(msg)
-        msg_dict['ranges'] = list(map(lambda x: (msg.range_max + 1) if x == float("inf") else x, msg.ranges))
+        msg_dict['ranges'] = list(map(lambda x: (msg.range_max + 1) if x == (float("inf") or float("-inf")) else x, msg.ranges))
 
         self.sonar_msg[msg.header.frame_id] = msg_dict
 
